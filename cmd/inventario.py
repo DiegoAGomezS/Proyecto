@@ -112,6 +112,7 @@ def distribuir_producto():
         print("❌ Valor inválido.")
 
 def calcular_inventario_minimo(id_producto):
+    mostrar_inventario()
     producto = next((item for item in inventario if item["id"] == id_producto), None)
     if not producto:
         print("❌ Producto no encontrado.")
