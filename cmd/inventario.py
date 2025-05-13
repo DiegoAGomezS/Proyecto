@@ -115,7 +115,8 @@ def calcular_inventario_minimo(id_producto):
     if not inventario:
         print("❌ No hay inventario disponible")
         return
-    mostrar_inventario()
+    else:
+        mostrar_inventario()
     producto = next((item for item in inventario if item["id"] == id_producto), None)
     if not producto:
         print("❌ Producto no encontrado.")
