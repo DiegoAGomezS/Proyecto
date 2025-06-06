@@ -1,12 +1,12 @@
 class productDao:
     def __init__(self):
-        self.productos = [] # Se crea una lista vacía para guardar los productos
+        self.productos = [] # Se crea una lista vacía para guardar los productos.
 
-    def add(self, producto): # Se agrega un producto a la lista
+    def add(self, producto): # Se agrega un producto a la lista.
         self.productos.append(producto)
         print("Producto agregado.")
 
-    def show(self): # Muestra todos los productos registrados
+    def show(self): # Muestra todos los productos registrados.
         if not self.productos:
             print("No hay productos registrados.")
         else:
