@@ -168,7 +168,8 @@ def menu():
         elif opcion == "4":
             try:
                 id_producto = int(input("🔸 Ingresa el ID del producto para calcular el inventario mínimo: "))
-                calcular_inventario_minimo(id_producto)
+                resultado = calcular_inventario_minimo(id_producto)
+                print(resultado)
             except ValueError:
                 print("❌ Valor inválido.")
         elif opcion == "5":
