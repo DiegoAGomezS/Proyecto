@@ -1,7 +1,7 @@
 import models.classes as c
 import dao.functions as f
 
-productos = f.productDao() # Crea un objeto que se encargará de guardar y mostrar productos.
+productos = f.productDao() # Crea un objeto que se encargará de guardar y mostrar productos
 
 def menu(): # Muestra el menú de opciones.
     print("""
