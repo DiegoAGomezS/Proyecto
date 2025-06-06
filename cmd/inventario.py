@@ -26,9 +26,9 @@ def cargar_distribuciones_excel():
     if os.path.exists("distribuciones.xlsx"):
         df = pd.read_excel("distribuciones.xlsx")
         distribuciones = df.to_dict(orient='records')
-        print("✔️ Distribuciones cargadas desde distribuciones.xlsx.")
+        return "✔️ Distribuciones cargadas desde distribuciones.xlsx."
     else:
-        print("📂 No se encontró distribuciones.xlsx. Se creará una nueva al salir.")
+        return "📂 No se encontró distribuciones.xlsx. Se creará una nueva al salir."
 
 # ====== GUARDADO EN EXCEL ======
 
@@ -40,7 +40,7 @@ def guardar_inventario_excel():
 def guardar_distribuciones_excel():
     df = pd.DataFrame(distribuciones)
     df.to_excel("distribuciones.xlsx", index=False)
-    print("💾 Distribuciones guardadas en distribuciones.xlsx.")
+    return "💾 Distribuciones guardadas en distribuciones.xlsx."
 
 # ====== UTILIDADES ======
 
@@ -113,41 +113,39 @@ def distribuir_producto():
 
 def calcular_inventario_minimo(id_producto):
     if not inventario:
-        print("❌ No hay inventario disponible")
-        return
-    else:
-        mostrar_inventario()
+        return f"❌ No hay inventario disponible."
+
     producto = next((item for item in inventario if item["id"] == id_producto), None)
     if not producto:
-        print("❌ Producto no encontrado.")
-        return
+        return f"❌ Producto no encontrado."
 
-    if "fecha_registro" not in producto or not producto["fecha_registro"]:
-        print(f"❌ El producto '{producto['nombre']}' no tiene fecha de registro asignada.")
-        return
+    fecha_registro = producto.get("fecha_registro")
+    if not fecha_registro:
+        return f"❌ El producto '{producto['nombre']}' no tiene fecha de registro asignada."
 
     distribuciones_producto = [d for d in distribuciones if d["id_producto"] == id_producto]
+    total_dist = len(distribuciones_producto)
+    if total_dist == 0:
+        return f"❌ No hay distribuciones registradas para este producto."
 
-    if not distribuciones_producto:
-        print("❌ No hay distribuciones registradas para este producto.")
-        return
+    formato = "%Y-%m-%d %H:%M:%S"
 
-    if len(distribuciones_producto) == 1:
-        fecha_inicial = datetime.strptime(producto["fecha_registro"], "%Y-%m-%d %H:%M:%S")
-        fecha_retiro = datetime.strptime(distribuciones_producto[0]["fecha_retiro"], "%Y-%m-%d %H:%M:%S")
-        dias_transcurridos = (fecha_retiro - fecha_inicial).days or 1
-        cantidad_retirada = distribuciones_producto[0]["cantidad"]
+    if total_dist == 1:
+        fecha_inicial = datetime.strptime(fecha_registro, formato)
+        fecha_retiro = datetime.strptime(distribuciones_producto[0]["fecha_retiro"], formato)
+        dias = (fecha_retiro - fecha_inicial).days or 1
+        cantidad = distribuciones_producto[0]["cantidad"]
     else:
-        fecha_ultima = datetime.strptime(distribuciones_producto[-1]["fecha_retiro"], "%Y-%m-%d %H:%M:%S")
-        fecha_penultima = datetime.strptime(distribuciones_producto[-2]["fecha_retiro"], "%Y-%m-%d %H:%M:%S")
-        dias_transcurridos = (fecha_ultima - fecha_penultima).days or 1
-        cantidad_retirada = distribuciones_producto[-1]["cantidad"]
+        fecha_penultima = datetime.strptime(distribuciones_producto[-2]["fecha_retiro"], formato)
+        fecha_ultima = datetime.strptime(distribuciones_producto[-1]["fecha_retiro"], formato)
+        dias = (fecha_ultima - fecha_penultima).days or 1
+        cantidad = distribuciones_producto[-1]["cantidad"]
 
-    consumo_diario_promedio = cantidad_retirada / dias_transcurridos
-    tiempo_reposicion = 5
-    inventario_minimo = consumo_diario_promedio * tiempo_reposicion
+    consumo_diario = cantidad / dias
+    inventario_minimo = consumo_diario * 5  # tiempo de reposición fijo
 
-    print(f"🔸 El inventario mínimo para el producto '{producto['nombre']}' es: {inventario_minimo:.2f} unidades.")
+    return f"🔸 El inventario mínimo para '{producto['nombre']}' es: {inventario_minimo:.2f} unidades."
+
 
 # ====== MENÚ PRINCIPAL ======
 
