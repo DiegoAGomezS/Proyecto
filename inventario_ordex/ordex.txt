@@ -1,0 +1,11 @@
+El proyecto Ordex es un sistema desarrollado en Python para la gestión 
+eficiente de inventarios en empresas o almacenes. Su principal objetivo 
+es facilitar el control y administración de productos mediante funcionalidades 
+como el registro de productos, la distribución según necesidades y el cálculo 
+automático del inventario mínimo para prevenir desabastecimientos.
+
+Ordex utiliza archivos Excel para almacenar y manejar la información,
+lo que permite una gestión sencilla y segura de los datos. Con Ordex,
+se optimizan los procesos logísticos y se garantiza un control actualizado 
+y eficiente del stock, apoyando la toma de decisiones estratégicas en la 
+gestión empresarial.
