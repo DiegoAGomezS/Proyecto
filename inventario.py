@@ -1,5 +1,3 @@
-# Sistema de Inventario - RG-007 y RG-008
-
 inventario = {}
 
 def agregar_productos():
