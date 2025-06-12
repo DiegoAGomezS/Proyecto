@@ -17,9 +17,9 @@ def cargar_inventario_excel():
         if "fecha_registro" not in df.columns:
             df["fecha_registro"] = None
         inventario = df.to_dict(orient='records')
-        print("✔️ Inventario cargado desde inventario.xlsx.")
+        return "✔️ Inventario cargado desde inventario.xlsx."
     else:
-        print("📂 No se encontró inventario.xlsx. Se creará uno nuevo al salir.")
+        return "📂 No se encontró inventario.xlsx. Se creará uno nuevo al salir."
 
 def cargar_distribuciones_excel():
     global distribuciones
@@ -35,7 +35,7 @@ def cargar_distribuciones_excel():
 def guardar_inventario_excel():
     df = pd.DataFrame(inventario)
     df.to_excel("inventario.xlsx", index=False)
-    print("💾 Inventario guardado en inventario.xlsx.")
+    return "💾 Inventario guardado en inventario.xlsx."
 
 def guardar_distribuciones_excel():
     df = pd.DataFrame(distribuciones)
@@ -55,8 +55,11 @@ def obtener_nuevo_id():
 
 def registrar_producto():
     nombre = input("🔸 Ingresa el nombre del producto: ")
-    precio = float(input("🔸 Ingresa el precio del producto: $"))
-    cantidad = int(input("🔸 Ingresa la cantidad disponible: "))
+    try:
+        precio = float(input("🔸 Ingresa el precio del producto: $"))
+        cantidad = int(input("🔸 Ingresa la cantidad disponible: "))
+    except ValueError:
+        return "❌ Precio o cantidad inválidos."
 
     producto = {
         "id": obtener_nuevo_id(),
@@ -67,32 +70,29 @@ def registrar_producto():
         "ultima_fecha_retiro": None
     }
     inventario.append(producto)
-    print(f"✅ Producto '{nombre}' registrado con éxito.")
+    return f"✅ Producto '{nombre}' registrado con éxito."
 
 def mostrar_inventario():
     if not inventario:
-        print("📦 Inventario vacío.")
+        return "📦 Inventario vacío."
     else:
         df = pd.DataFrame(inventario)
-        print("\n📋 Inventario actual:")
-        print(df.to_string(index=False))
+        return "\n📋 Inventario actual:\n" + df.to_string(index=False)
 
 def distribuir_producto():
     if not inventario:
-        print("❌ No hay productos para distribuir.")
-        return
-    mostrar_inventario()
+        return "❌ No hay productos para distribuir."
+
+    resultado = mostrar_inventario() + "\n"
     try:
         id_producto = int(input("🔸 Ingresa el ID del producto a distribuir: "))
         producto = next((item for item in inventario if item["id"] == id_producto), None)
         if not producto:
-            print("❌ ID no encontrado.")
-            return
+            return resultado + "❌ ID no encontrado."
 
         cantidad = int(input(f"🔸 Cantidad a retirar de '{producto['nombre']}': "))
         if cantidad > producto["cantidad"]:
-            print("❌ No hay suficiente stock.")
-            return
+            return resultado + "❌ No hay suficiente stock."
 
         confirmar = input(f"¿Confirmar retiro de {cantidad} unidades de '{producto['nombre']}'? (Y/N): ").upper()
         if confirmar == "Y":
@@ -105,19 +105,19 @@ def distribuir_producto():
                 "fecha_retiro": fecha_retiro
             })
             producto["ultima_fecha_retiro"] = fecha_retiro
-            print(f"✅ Se retiraron {cantidad} unidades de '{producto['nombre']}'.")
+            return resultado + f"✅ Se retiraron {cantidad} unidades de '{producto['nombre']}'."
         else:
-            print("🔸 Operación cancelada.")
+            return resultado + "🔸 Operación cancelada."
     except ValueError:
-        print("❌ Valor inválido.")
+        return resultado + "❌ Valor inválido."
 
 def calcular_inventario_minimo(id_producto):
     if not inventario:
-        return f"❌ No hay inventario disponible."
+        return "❌ No hay inventario disponible."
 
     producto = next((item for item in inventario if item["id"] == id_producto), None)
     if not producto:
-        return f"❌ Producto no encontrado."
+        return "❌ Producto no encontrado."
 
     fecha_registro = producto.get("fecha_registro")
     if not fecha_registro:
@@ -126,7 +126,7 @@ def calcular_inventario_minimo(id_producto):
     distribuciones_producto = [d for d in distribuciones if d["id_producto"] == id_producto]
     total_dist = len(distribuciones_producto)
     if total_dist == 0:
-        return f"❌ No hay distribuciones registradas para este producto."
+        return "❌ No hay distribuciones registradas para este producto."
 
     formato = "%Y-%m-%d %H:%M:%S"
 
@@ -146,7 +146,6 @@ def calcular_inventario_minimo(id_producto):
 
     return f"🔸 El inventario mínimo para '{producto['nombre']}' es: {inventario_minimo:.2f} unidades."
 
-
 # ====== MENÚ PRINCIPAL ======
 
 def menu():
@@ -160,11 +159,14 @@ def menu():
         opcion = input("Selecciona una opción (1-5): ")
 
         if opcion == "1":
-            registrar_producto()
+            resultado = registrar_producto()
+            print(resultado)
         elif opcion == "2":
-            mostrar_inventario()
+            resultado = mostrar_inventario()
+            print(resultado)
         elif opcion == "3":
-            distribuir_producto()
+            resultado = distribuir_producto()
+            print(resultado)
         elif opcion == "4":
             try:
                 id_producto = int(input("🔸 Ingresa el ID del producto para calcular el inventario mínimo: "))
@@ -173,8 +175,8 @@ def menu():
             except ValueError:
                 print("❌ Valor inválido.")
         elif opcion == "5":
-            guardar_inventario_excel()
-            guardar_distribuciones_excel()
+            print(guardar_inventario_excel())
+            print(guardar_distribuciones_excel())
             print("📤 Saliendo del programa...")
             break
         else:
@@ -183,6 +185,6 @@ def menu():
 # ====== BLOQUE PRINCIPAL ======
 
 if __name__ == "__main__":
-    cargar_inventario_excel()
-    cargar_distribuciones_excel()
+    print(cargar_inventario_excel())
+    print(cargar_distribuciones_excel())
     menu()
