@@ -51,8 +51,11 @@ def menu():
             try:
                 id_producto = int(input("🔸 Ingresa el ID del producto a distribuir: "))
             except ValueError:
-                print("❌ ID inválido.")
-                continue
+                seleccion = input("🔸 Valor ajeno detectado ¿Esta intentando regresar al menu? (Y/N):   ")
+                if seleccion.lower() == 'y':
+                    continue
+                else:
+                    id_producto = int(input("🔸 Ingresa el ID del producto a distribuir: "))
             producto = product_dao.find_by_id(id_producto)
             if not producto:
                 print("❌ Producto no encontrado.")
@@ -87,7 +90,7 @@ def menu():
                 print("❌ ID inválido.")
                 continue
             resultado = inventario_minimo_dao.calcular_minimo(
-                id_producto, product_dao.products, distribution_dao.distribuciones
+                id_producto, product_dao.products, distribution_dao.distributions
             )
             print(resultado)
 
