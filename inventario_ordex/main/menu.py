@@ -1,3 +1,6 @@
+# Se importan los módulos necesarios:
+# - 'c' contiene las clases como Product.
+# - 'f' contiene las funciones y clases DAO como productDao.
 import models.classes as c
 import dao.functions as f
 
@@ -11,15 +14,17 @@ def menu():  # Muestra el menú de opciones
 6. Salir
 """)
 
+""" Función principal que ejecuta el ciclo del menú de interacción con el usuario. """
+
 def main():
-    while True:  # Bucle principal del programa
+    while True:  # Ciclo infinito hasta que el usuario elija salir.
         menu()  # Muestra el menú
         option = input("Digite una opción: ")  # Pide la opción al usuario
 
         if option == '1':  # Agregar producto
             print("\n--- AGREGAR PRODUCTO ---")
             nombre = input("Nombre del producto: ")
-            try:
+            try:  # Se solicita el precio y la existencia del producto.
                 precio = float(input("Precio: "))
                 existencia = int(input("Existencia: "))
             except ValueError:  # Vuelve al menú si hay error
@@ -54,4 +59,3 @@ def main():
 
         else:  # Opción inválida
             print("Opción no válida, intente de nuevo.")
-
