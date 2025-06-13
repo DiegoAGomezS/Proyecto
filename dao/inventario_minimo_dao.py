@@ -1,18 +1,20 @@
 from datetime import datetime
 
+#Clase del inventario mínimo
 class InventarioMinimoDao:
+    #Función del cálciulo del inventario mínimo.
     def calcular_minimo(self, id_producto, productos, distribuciones):
         producto = next((p for p in productos if p.id == id_producto), None)
         if not producto:
-            return f"❌ Producto no encontrado."
+            return f"Producto no encontrado."
 
         if not producto.fecha_registro:
-            return f"❌ El producto '{producto.nombre}' no tiene fecha de registro."
+            return f"El producto '{producto.nombre}' no tiene fecha de registro."
 
         distribuciones_producto = [d for d in distribuciones if d.id_producto == id_producto]
         total_dist = len(distribuciones_producto)
         if total_dist == 0:
-            return f"❌ No hay distribuciones registradas para este producto."
+            return f"No hay distribuciones registradas para este producto."
 
         formato = "%Y-%m-%d %H:%M:%S"
         fecha_registro = datetime.strptime(producto.fecha_registro, formato)

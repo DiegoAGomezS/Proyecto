@@ -4,6 +4,7 @@ from dao.inventario_minimo_dao import InventarioMinimoDao
 from models.classes import Producto, Distribucion
 from datetime import datetime
 
+#Función el menú
 def menu():
     product_dao = ProductDao()
     distribution_dao = DistributionDao()
@@ -12,6 +13,7 @@ def menu():
     product_dao.cargar_inventario()
     distribution_dao.cargar_distribuciones()
 
+#Opciónes de selección
     while True:
         print("\n====== MENÚ DE INVENTARIO ======")
         print("\033[32m1. Registrar producto\033[0m")               # Verde
@@ -22,30 +24,33 @@ def menu():
         print("\033[31m6. Salir y guardar inventario y distribuciones\033[0m")  # Rojo
         opcion = input("Selecciona una opción (1-6): ")
 
+#Opción 1: Registrar productos
         if opcion == "1":
             nombre = input("🔸 Ingresa el nombre del producto: ")
             try:
                 precio = float(input("🔸 Ingresa el precio del producto: $"))
                 if precio < 0:
-                    print("❌ Error... Ingrese valores positivos.")
+                    print("Error... Ingrese valores positivos.")
                     continue
                 cantidad = int(input("🔸 Ingresa la cantidad disponible: "))
                 if cantidad < 0:
-                    print("❌ Error... Ingrese valores positivos.")
+                    print("Error... Ingrese valores positivos.")
                     continue
             except ValueError:
-                print("❌ Precio o cantidad inválidos.")
+                print("Precio o cantidad inválidos.")
                 continue
 
             nuevo_id = max([p.id for p in product_dao.products], default=0) + 1
             fecha_registro = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             producto = Producto(nuevo_id, nombre, precio, cantidad, fecha_registro)
             product_dao.add(producto)
-            print(f"✅ Producto '{nombre}' registrado con ID {nuevo_id}.")
+            print(f"Producto '{nombre}' registrado con ID {nuevo_id}.")
 
+#Opción 2: Mostrar la información del inventario
         elif opcion == "2":
             product_dao.show()
 
+#Opción 3: Distribuir algún producto
         elif opcion == "3":
             product_dao.show()
             try:
@@ -58,15 +63,15 @@ def menu():
                     id_producto = int(input("🔸 Ingresa el ID del producto a distribuir: "))
             producto = product_dao.find_by_id(id_producto)
             if not producto:
-                print("❌ Producto no encontrado.")
+                print("Producto no encontrado.")
                 continue
             try:
                 cantidad = int(input(f"🔸 Cantidad a retirar de '{producto.nombre}': "))
             except ValueError:
-                print("❌ Cantidad inválida.")
+                print("Cantidad inválida.")
                 continue
             if cantidad > producto.cantidad:
-                print("❌ No hay suficiente stock.")
+                print("No hay suficiente stock.")
                 continue
             confirmar = input(f"¿Confirmar retiro de {cantidad} unidades de '{producto.nombre}'? (Y/N): ").upper()
             if confirmar == "Y":
@@ -75,30 +80,34 @@ def menu():
                 distribucion = Distribucion(producto.id, producto.nombre, cantidad, fecha_retiro)
                 distribution_dao.add(distribucion)
                 producto.ultima_fecha_retiro = fecha_retiro
-                print(f"✅ Se retiraron {cantidad} unidades de '{producto.nombre}'.")
+                print(f"Se retiraron {cantidad} unidades de '{producto.nombre}'.")
             else:
                 print("🔸 Operación cancelada.")
 
+#Opción 4: Mostrar información de las distribuciones
         elif opcion == "4":
             distribution_dao.show()
 
+#Opción 5: Calcular el inventario mínimo
         elif opcion == "5":
             product_dao.show()
             try:
                 id_producto = int(input("🔸 Ingresa el ID del producto a consultar su inventario mínimo: "))
             except ValueError:
-                print("❌ ID inválido.")
+                print("ID inválido.")
                 continue
             resultado = inventario_minimo_dao.calcular_minimo(
                 id_producto, product_dao.products, distribution_dao.distributions
             )
             print(resultado)
 
+#Guardar información de los registros y distribuciones
         elif opcion == "6":
             product_dao.guardar_inventario()
             distribution_dao.guardar_distribuciones()
-            print("📤 Saliendo del programa...")
+            print("Saliendo del programa...")
             break
 
+#En caso de no elegirse una opción no válida.
         else:
-            print("❌ Opción no válida.")
+            print("Opción no válida.")

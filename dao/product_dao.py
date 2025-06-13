@@ -1,10 +1,12 @@
 import pandas as pd
 from models.classes import Producto
 
+#Clase de productos (Registro para el inventario)
 class ProductDao:
     def __init__(self):
         self.products = []
 
+#Función para cargar la información del excel del inventario
     def cargar_inventario(self, filename="inventario.xlsx"):
         try:
             df = pd.read_excel(filename)
@@ -19,9 +21,9 @@ class ProductDao:
                     ultima_fecha_retiro=row.get('ultima_fecha_retiro', None)
                 )
                 self.products.append(p)
-            print(f"✔️ Inventario cargado de {filename}")
+            print(f"Inventario cargado de {filename}")
         except FileNotFoundError:
-            print(f"⚠️ Archivo {filename} no encontrado. Se iniciará vacío.")
+            print(f"Archivo {filename} no encontrado. Se iniciará vacío.")
 
     def guardar_inventario(self, filename="inventario.xlsx"):
         data = []
@@ -36,14 +38,14 @@ class ProductDao:
             })
         df = pd.DataFrame(data)
         df.to_excel(filename, index=False)
-        print(f"💾 Inventario guardado en {filename}")
+        print(f"Inventario guardado en {filename}")
 
     def add(self, product):
         self.products.append(product)
 
     def show(self):
         if not self.products:
-            print("📦 No hay productos en inventario.")
+            print("No hay productos en inventario.")
             return
         for p in self.products:
             print(p)
