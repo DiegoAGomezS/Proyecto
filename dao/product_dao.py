@@ -5,7 +5,7 @@ class ProductDao:
     def __init__(self):
         self.products = []
 
-    def load_from_excel(self, filename="inventario.xlsx"):
+    def cargar_inventario(self, filename="inventario.xlsx"):
         try:
             df = pd.read_excel(filename)
             self.products = []
@@ -23,7 +23,7 @@ class ProductDao:
         except FileNotFoundError:
             print(f"⚠️ Archivo {filename} no encontrado. Se iniciará vacío.")
 
-    def save_to_excel(self, filename="inventario.xlsx"):
+    def guardar_inventario(self, filename="inventario.xlsx"):
         data = []
         for p in self.products:
             data.append({

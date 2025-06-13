@@ -5,7 +5,7 @@ class DistributionDao:
     def __init__(self):
         self.distributions = []
 
-    def load_from_excel(self, filename="distribuciones.xlsx"):
+    def cargar_distribuciones(self, filename="distribuciones.xlsx"):
         try:
             df = pd.read_excel(filename)
             self.distributions = []
@@ -21,7 +21,7 @@ class DistributionDao:
         except FileNotFoundError:
             print(f"⚠️ Archivo {filename} no encontrado. Se iniciará vacío.")
 
-    def save_to_excel(self, filename="distribuciones.xlsx"):
+    def guardar_distribuciones(self, filename="distribuciones.xlsx"):
         data = []
         for d in self.distributions:
             data.append({
