@@ -18,12 +18,12 @@ class ProductDao:
     def guardar_inventario(self):
         with open("inventario.bin", "wb") as f:
             pickle.dump(self.products, f)
-        print("💾 Inventario guardado en inventario.bin")
+        print("Inventario guardado en inventario.bin")
 
     def cargar_inventario(self):
         if os.path.exists("inventario.bin"):
             with open("inventario.bin", "rb") as f:
                 self.products = pickle.load(f)
-            print("✔️ Inventario cargado de inventario.bin")
+            print("Inventario cargado de inventario.bin")
         else:
-            print("📂 No se encontró inventario.bin. Se creará uno nuevo al salir.")
+            print("No se encontró inventario.bin. Se creará uno nuevo al salir.")

@@ -8,12 +8,12 @@ class InventarioMinimoDao:
     def calcular_inventario_minimo(self, id_producto):
         producto = next((p for p in self.productos if p.id == id_producto), None)
         if not producto:
-            return "❌ Producto no encontrado."
+            return "Producto no encontrado."
 
         distribuciones_producto = [d for d in self.distribuciones if d.id_producto == id_producto]
         total_dist = len(distribuciones_producto)
         if total_dist == 0:
-            return "❌ No hay distribuciones registradas para este producto."
+            return "No hay distribuciones registradas para este producto."
 
         formato = "%Y-%m-%d %H:%M:%S"
         if total_dist == 1:

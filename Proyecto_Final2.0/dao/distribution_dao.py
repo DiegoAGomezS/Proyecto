@@ -15,12 +15,12 @@ class DistributionDao:
     def guardar_distribuciones(self):
         with open("distribuciones.bin", "wb") as f:
             pickle.dump(self.distributions, f)
-        print("💾 Distribuciones guardadas en distribuciones.bin")
+        print("Distribuciones guardadas en distribuciones.bin")
 
     def cargar_distribuciones(self):
         if os.path.exists("distribuciones.bin"):
             with open("distribuciones.bin", "rb") as f:
                 self.distributions = pickle.load(f)
-            print("✔️ Distribuciones cargadas de distribuciones.bin")
+            print("Distribuciones cargadas de distribuciones.bin")
         else:
-            print("📂 No se encontró distribuciones.bin. Se creará uno nuevo al salir.")
+            print("No se encontró distribuciones.bin. Se creará uno nuevo al salir.")

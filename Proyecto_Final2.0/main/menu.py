@@ -27,14 +27,14 @@ def menu():
                 precio = float(input("🔸 Precio: $"))
                 cantidad = int(input("🔸 Cantidad: "))
             except ValueError:
-                print("❌ Valor inválido.")
+                print("Valor inválido.")
                 continue
 
             nuevo_id = max([p.id for p in product_dao.products], default=0) + 1
             fecha_registro = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             producto = Producto(nuevo_id, nombre, precio, cantidad, fecha_registro)
             product_dao.add(producto)
-            print(f"✅ Producto '{nombre}' registrado con ID {nuevo_id}.")
+            print(f"Producto '{nombre}' registrado con ID {nuevo_id}.")
 
         elif opcion == "2":
             product_dao.show()
@@ -45,11 +45,11 @@ def menu():
                 id_producto = int(input("ID del producto a distribuir: "))
                 producto = product_dao.find_by_id(id_producto)
                 if not producto:
-                    print("❌ No existe ese producto.")
+                    print("No existe ese producto.")
                     continue
                 cantidad = int(input(f"Cantidad a retirar de '{producto.nombre}': "))
                 if cantidad > producto.cantidad:
-                    print("❌ No hay suficiente stock.")
+                    print("No hay suficiente stock.")
                     continue
                 confirmar = input("¿Confirmar? (Y/N): ").upper()
                 if confirmar == "Y":
@@ -58,9 +58,9 @@ def menu():
                     distribucion = Distribucion(producto.id, producto.nombre, cantidad, fecha_retiro)
                     distribution_dao.add(distribucion)
                     producto.ultima_fecha_retiro = fecha_retiro
-                    print("✅ Distribución realizada.")
+                    print("Distribución realizada.")
             except ValueError:
-                print("❌ Valor inválido.")
+                print("Valor inválido.")
 
         elif opcion == "4":
             distribution_dao.show()
@@ -73,12 +73,12 @@ def menu():
                 resultado = inventario_minimo_dao.calcular_inventario_minimo(id_producto)
                 print(resultado)
             except ValueError:
-                print("❌ Valor inválido.")
+                print("Valor inválido.")
 
         elif opcion == "6":
             product_dao.guardar_inventario()
             distribution_dao.guardar_distribuciones()
-            print("📤 Saliendo...")
+            print("Saliendo...")
             break
         else:
-            print("❌ Opción no válida.")
+            print("Opción no válida.")
