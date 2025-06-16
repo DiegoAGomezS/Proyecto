@@ -10,7 +10,7 @@ def menu():
 
     product_dao.cargar_inventario()
     distribution_dao.cargar_distribuciones()
-
+#Ejemplo
     while True:
         print("\n====== MENÚ DE INVENTARIO ======")
         print("1. Registrar producto")
