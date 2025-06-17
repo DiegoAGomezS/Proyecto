@@ -21,9 +21,9 @@ class DistributionDao:
 
 #Función encargada de cargar la información previamente guardada sobre las distribuciones
     def cargar_distribuciones(self):
-         # Verifica si el archivo 'distribuciones.bin' existe
+        # Verifica si el archivo 'distribuciones.bin' existe
         if os.path.exists("distribuciones.bin"):
-             # Abre el archivo en modo lectura binaria
+            # Abre el archivo en modo lectura binaria
             with open("distribuciones.bin", "rb") as f:
                 # Carga las distribuciones desde el archivo y las asigna a la lista
                 self.distributions = pickle.load(f)
