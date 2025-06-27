@@ -32,7 +32,7 @@ class InventarioMinimoDao:
             dias = (fecha_ultima - fecha_penultima).days or 1
             cantidad = distribuciones_producto[-1].cantidad
 
-        consumo_diario = cantidad / dias  # Se calcula el consumo diario
-        inventario_minimo = consumo_diario * 5  # El inventario mínimo se basa en el consumo diario multiplicado por 5 días de reserva
+        consumo_diario = cantidad / dias 
+        inventario_minimo = consumo_diario * 5
 
         return f"🔸 El inventario mínimo para '{producto.nombre}' es: {inventario_minimo:.2f} unidades."
