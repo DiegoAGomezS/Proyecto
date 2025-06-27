@@ -2,31 +2,30 @@ import main.menu as m
 from dao.user_dao import UserDao
 import pwinput
 
-user_dao = UserDao()
-user_dao.agregar_usuario("admin", "Admin123")
+user_dao = UserDao() # Crear instancia de UserDao para manejar usuarios
 
 def inicio_sesion():
     print("====== INICIO DE SESIÓN ======")
-    user_dao = UserDao()
-    usuarios = user_dao.cargar_usuarios()
+    usuarios = user_dao.cargar_usuarios()  # Cargar los usuarios desde el archivo usuarios.txt
 
-    intentos = 3  # intentos máximos permitidos
+    intentos = 3 # Número máximo de intentos permitidos
 
     while intentos > 0:
-        usuario = input("Usuario: ")
-        clave_ingresada = pwinput.pwinput(prompt="Contraseña: ", mask="°")
+        usuario = input("Usuario: ").strip() # Pedir usuario y eliminar espacios al inicio y final
+        clave_ingresada = pwinput.pwinput(prompt="Contraseña: ", mask="*").strip() # Pedir contraseña oculta y limpiar espacios
 
+        # Pedir contraseña oculta y limpiar espacios
         if usuario in usuarios and usuarios[usuario] == clave_ingresada:
             print("Acceso permitido.")
-            return True
+            return True  # Inicio de sesión exitoso
         else:
-            intentos -= 1
+            intentos -= 1 # Restar un intento
             print(f"Usuario o contraseña incorrectos. Te quedan {intentos} intento(s).")
 
-        if intentos == 0:
-            print("Has excedido el número de intentos. El programa se cerrará.")
-            return False
+    # Si se acaban los intentos, mostrar mensaje y finalizar
+    print("Has excedido el número de intentos. El programa se cerrará.")
+    return False
 
 if __name__ == "__main__":
-    if inicio_sesion():
-        m.menu()
+    if inicio_sesion(): # Ejecutar inicio de sesión y si es exitoso
+        m.menu() # Llamar al menú principal

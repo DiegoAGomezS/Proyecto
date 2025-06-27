@@ -1,5 +1,5 @@
-import pickle
-import os
+import pickle # Para guardar y cargar objetos en archivos binarios
+import os  # Para verificar si el archivo existe
 
 #Clase del inventario
 class ProductDao:
