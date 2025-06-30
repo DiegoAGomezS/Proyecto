@@ -33,10 +33,13 @@ def menu():
                 print("Valor inválido.")
                 continue
             
+            # Crear un nuevo ID sumando 1 al mayor ID actual (o 1 si no hay productos)
             nuevo_id = max([p.id for p in product_dao.products], default=0) + 1
+            # Obtener la fecha y hora actual en formato legible
             fecha_registro = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            #Crear un nuevo producto con los datos ingresados
             producto = Producto(nuevo_id, nombre, precio, cantidad, fecha_registro)
-            product_dao.add(producto)
+            product_dao.add(producto) # Agregar el producto al inventario
             print(f"Producto '{nombre}' registrado con ID {nuevo_id}.")
 
 #Opción 2: Mostrar la información del inventario
