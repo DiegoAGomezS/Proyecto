@@ -11,10 +11,10 @@ class UserDao:
             print("El usuario y la contraseña no pueden estar vacíos.")
             return
 
-        usuarios = self.cargar_usuarios()
+        usuarios = self.cargar_usuarios() # Carga los usuarios ya existentes
         if usuario in usuarios:
-            print(f"El usuario '{usuario}' ya existe.")
-        else:
+            print(f"El usuario '{usuario}' ya existe.") # Si el usuario ya está registrado, muestra un mensaje
+        else:  # Si no existe, lo agrega al archivo en una nueva línea
             with open(self.archivo, "a") as archivo:
                 archivo.write(f"{usuario},{clave}\n")
             print(f"Usuario '{usuario}' agregado correctamente.")
